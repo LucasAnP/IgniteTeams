@@ -1,4 +1,4 @@
-import { ThemeProvider } from "styled-components/native";
+import { ThemeProvider } from "styled-components";
 import { Groups } from "@screens/Groups";
 import {
   useFonts,
