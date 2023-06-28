@@ -9,7 +9,7 @@ export const GroupCard = ({ title, ...rest }: Props) => {
   return (
     <Container {...rest}>
       <Icon />
-      <Title></Title>
+      <Title>{title}</Title>
     </Container>
   );
 };

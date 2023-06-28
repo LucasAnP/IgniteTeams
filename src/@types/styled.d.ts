@@ -2,7 +2,8 @@
 import "styled-components";
 import Color from "./colors";
 import Size from "./sizes";
-import { COLORS, FONT_FAMILY, FONT_SIZE } from "src/theme/values";
+import { COLORS } from "../theme/colors";
+import { FONT_FAMILY, FONT_SIZE } from "../theme/fonts";
 
 declare module "styled-components/native" {
   export interface DefaultTheme {
