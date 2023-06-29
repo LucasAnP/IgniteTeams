@@ -1,25 +1,33 @@
+import { useState } from "react";
+import { FlatList } from "react-native";
+import { useRoute } from "@react-navigation/core";
 import { Header } from "@components/Header";
-import { Container, Form, HeaderList, NumbersOfPlayers } from "./styles";
 import { Highlight } from "@components/Highlight";
 import { ButtonIcon } from "@components/ButtonIcon";
 import { Input } from "@components/Input";
 import { Filter } from "@components/Filter";
-import { FlatList } from "react-native";
-import { useState } from "react";
 import { PlayerCard } from "@components/PlayerCard";
 import { ListEmpty } from "@components/ListEmpty";
 import { Button } from "@components/Button";
+import { Container, Form, HeaderList, NumbersOfPlayers } from "./styles";
+
+type RouteParams = {
+  group: string;
+};
 
 export const Players = () => {
   const [team, setTeam] = useState("Team A");
   const [players, setPlayers] = useState(["João", "Carlos"]);
+
+  const route = useRoute();
+  const { group } = route.params as RouteParams;
 
   return (
     <Container>
       <Header showBackButton />
 
       <Highlight
-        title="Team name"
+        title={group}
         subtitle="Add the guys and separate the teams."
       />
 
