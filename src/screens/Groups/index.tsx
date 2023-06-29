@@ -21,7 +21,8 @@ export function Groups() {
 
   const fetchGroups = async () => {
     try {
-      await groupsGetAll();
+      const data = await groupsGetAll();
+      setGroups(data);
     } catch (error) {
       console.log(error);
     }
@@ -40,7 +41,7 @@ export function Groups() {
       <FlatList
         data={groups}
         keyExtractor={(_, index) => index.toString()}
-        renderItem={({ item }) => <GroupCard title="Galera do Ignite" />}
+        renderItem={({ item }) => <GroupCard title={item} />}
         contentContainerStyle={groups?.length === 0 && { flex: 1 }}
         ListEmptyComponent={() => (
           <ListEmpty message="How about signing up the first class?" />
