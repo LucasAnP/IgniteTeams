@@ -1,14 +1,22 @@
-import { Header } from "@components/Header";
-import { Container } from "./styles";
-import { Highlight } from "@components/Highlight";
-import { GroupCard } from "@components/GroupCard";
 import { useState } from "react";
 import { FlatList } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+
+import { Header } from "@components/Header";
+import { Highlight } from "@components/Highlight";
+import { GroupCard } from "@components/GroupCard";
 import { ListEmpty } from "@components/ListEmpty";
 import { Button } from "@components/Button";
 
+import { Container } from "./styles";
+
 export function Groups() {
   const [groups, setGroups] = useState<string[]>([]);
+  const navigation = useNavigation();
+
+  const handleNewGroup = () => {
+    navigation.navigate("newGroup");
+  };
 
   return (
     <Container>
@@ -25,7 +33,7 @@ export function Groups() {
         showsVerticalScrollIndicator={false}
       />
 
-      <Button title="Create new team" />
+      <Button title="Create new team" onPress={handleNewGroup} />
     </Container>
   );
 }
