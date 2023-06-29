@@ -44,7 +44,9 @@ export const Players = () => {
       <FlatList
         data={players}
         keyExtractor={(_, index) => index.toString()}
-        renderItem={({ item }) => <PlayerCard name={item} />}
+        renderItem={({ item }) => (
+          <PlayerCard name={item} onRemove={() => {}} />
+        )}
       />
     </Container>
   );
