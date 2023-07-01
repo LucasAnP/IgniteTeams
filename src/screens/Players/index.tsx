@@ -19,12 +19,14 @@ import { playerRemoveByGroup } from "@storage/player/playerRemoveByGroup";
 import { groupRemoveByName } from "@storage/group/groupRemoveByName";
 
 import { Container, Form, HeaderList, NumbersOfPlayers } from "./styles";
+import { Loading } from "@components/Loading";
 
 type RouteParams = {
   group: string;
 };
 
 export const Players = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [newPlayerName, setNewPlayerName] = useState("");
   const [team, setTeam] = useState("Team A");
   const [players, setPlayers] = useState<PlayerStorageDTO[]>([]);
@@ -53,11 +55,12 @@ export const Players = () => {
 
       newPlayerNameInputRef.current?.blur();
       setNewPlayerName("");
+      fetchPlayersByTeam();
     } catch (error) {
       if (error instanceof AppError) {
         Alert.alert("New player", error.message);
       } else {
-        console.log(error);
+        console.warn(error);
         Alert.alert("New player", "Unable to add a new player.");
       }
     }
@@ -65,11 +68,14 @@ export const Players = () => {
 
   const fetchPlayersByTeam = async () => {
     try {
+      setIsLoading(true);
       const playersByTeam = await playersGetByGroupAndTeam(group, team);
       setPlayers(playersByTeam);
     } catch (error) {
-      console.log(error);
+      console.warn(error);
       Alert.alert("Players", "Unable to load players of the selected team.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -78,7 +84,7 @@ export const Players = () => {
       await playerRemoveByGroup(playerName, group);
       fetchPlayersByTeam();
     } catch (error) {
-      console.log(error);
+      console.warn(error);
       Alert.alert("Players", "Unable to remove this player.");
     }
   };
@@ -86,10 +92,9 @@ export const Players = () => {
   const groupRemove = async () => {
     try {
       await groupRemoveByName(group);
-      console.log("Inside group remove");
       navigation.navigate("groups");
     } catch (error) {
-      console.log(error);
+      console.warn(error);
       Alert.alert("Remove team", "Unable to remove this team.");
     }
   };
@@ -105,7 +110,7 @@ export const Players = () => {
 
   useEffect(() => {
     fetchPlayersByTeam();
-  }, [team, handleAddPlayer]);
+  }, [team]);
 
   return (
     <Container>
@@ -144,24 +149,28 @@ export const Players = () => {
         />
         <NumbersOfPlayers>{players.length}</NumbersOfPlayers>
       </HeaderList>
-      <FlatList
-        data={players}
-        keyExtractor={(_, index) => index.toString()}
-        ListEmptyComponent={() => (
-          <ListEmpty message="There aren't people in this team" />
-        )}
-        renderItem={({ item }) => (
-          <PlayerCard
-            name={item.name}
-            onRemove={() => handleRemovePlayer(item.name)}
-          />
-        )}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={[
-          { paddingBottom: 100 },
-          players.length === 0 && { flex: 1 },
-        ]}
-      />
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <FlatList
+          data={players}
+          keyExtractor={(_, index) => index.toString()}
+          ListEmptyComponent={() => (
+            <ListEmpty message="There aren't people in this team" />
+          )}
+          renderItem={({ item }) => (
+            <PlayerCard
+              name={item.name}
+              onRemove={() => handleRemovePlayer(item.name)}
+            />
+          )}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={[
+            { paddingBottom: 100 },
+            players.length === 0 && { flex: 1 },
+          ]}
+        />
+      )}
 
       <Button
         title="Remove Team"

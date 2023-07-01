@@ -27,7 +27,7 @@ export const NewGroup = () => {
         Alert.alert("New Team", error.message);
       } else {
         Alert.alert("New Team", "Unable to create a new team.");
-        console.log(error);
+        console.warn(error);
       }
     }
   };
