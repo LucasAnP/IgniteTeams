@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Alert, FlatList, Keyboard, TextInput } from "react-native";
-import { useRoute } from "@react-navigation/core";
-import { useNavigation } from "@react-navigation/native";
+import { useRoute, useNavigation } from "@react-navigation/native";
 
 import { Header } from "@components/Header";
 import { Highlight } from "@components/Highlight";
@@ -87,6 +86,7 @@ export const Players = () => {
   const groupRemove = async () => {
     try {
       await groupRemoveByName(group);
+      console.log("Inside group remove");
       navigation.navigate("groups");
     } catch (error) {
       console.log(error);
@@ -97,7 +97,7 @@ export const Players = () => {
   const handleGroupRemove = async () => {
     Alert.alert("Remove", "Are you sure you want to remove the team?", [
       { text: "No", style: "cancel" },
-      { text: "Yes", onPress: () => groupRemove },
+      { text: "Yes", onPress: () => groupRemove() },
     ]);
     try {
     } catch (error) {}

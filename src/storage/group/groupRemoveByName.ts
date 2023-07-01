@@ -8,6 +8,7 @@ export async function groupRemoveByName(groupDeleted: string) {
     const groupsInStorage = await groupsGetAll();
     const filtered = groupsInStorage.filter((group) => group !== groupDeleted);
     const groups = JSON.stringify(filtered);
+
     await AsyncStorage.setItem(GROUP_COLLECTION, groups);
     await AsyncStorage.removeItem(`${PLAYER_COLLECTION}-${groupDeleted}`);
   } catch (error) {
