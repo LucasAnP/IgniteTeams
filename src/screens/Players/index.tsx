@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Alert, FlatList } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { Alert, FlatList, Keyboard, TextInput } from "react-native";
 import { useRoute } from "@react-navigation/core";
 import { Header } from "@components/Header";
 import { Highlight } from "@components/Highlight";
@@ -27,6 +27,8 @@ export const Players = () => {
   const route = useRoute();
   const { group } = route.params as RouteParams;
 
+  const newPlayerNameInputRef = useRef<TextInput>(null);
+
   const handleAddPlayer = async () => {
     if (newPlayerName.trim().length === 0) {
       return Alert.alert(
@@ -41,6 +43,10 @@ export const Players = () => {
 
     try {
       await playerAddByGroup(newPlayer, group);
+      Keyboard.dismiss();
+
+      newPlayerNameInputRef.current?.blur();
+      setNewPlayerName("");
     } catch (error) {
       if (error instanceof AppError) {
         Alert.alert("New player", error.message);
@@ -76,9 +82,13 @@ export const Players = () => {
 
       <Form>
         <Input
+          inputRef={newPlayerNameInputRef}
+          value={newPlayerName}
           onChangeText={setNewPlayerName}
           placeholder="Player name"
           autoCorrect={false}
+          onSubmitEditing={handleAddPlayer}
+          returnKeyType="done"
         />
         <ButtonIcon name="add" onPress={handleAddPlayer} />
       </Form>
