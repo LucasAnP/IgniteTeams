@@ -18,9 +18,7 @@ IgniteTeams is the second project of Ignite, to practice fundamentals in React N
 
 Clone the project repository
 
-```
 [https://github.com/LucasAnP/IgniteTeams.git](https://github.com/LucasAnP/IgniteTeams.git)
-```
 
 Access the project directory
 
