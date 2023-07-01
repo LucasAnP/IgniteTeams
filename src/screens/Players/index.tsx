@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Alert, FlatList, Keyboard, TextInput } from "react-native";
 import { useRoute } from "@react-navigation/core";
+import { useNavigation } from "@react-navigation/native";
+
 import { Header } from "@components/Header";
 import { Highlight } from "@components/Highlight";
 import { ButtonIcon } from "@components/ButtonIcon";
@@ -9,12 +11,15 @@ import { Filter } from "@components/Filter";
 import { PlayerCard } from "@components/PlayerCard";
 import { ListEmpty } from "@components/ListEmpty";
 import { Button } from "@components/Button";
-import { Container, Form, HeaderList, NumbersOfPlayers } from "./styles";
 import { AppError } from "@utils/AppError";
+
 import { playerAddByGroup } from "@storage/player/playerAddByGroup";
 import { playersGetByGroupAndTeam } from "@storage/player/playersGetByGroupAndTeam";
 import { PlayerStorageDTO } from "@storage/player/playerStorageDTO";
 import { playerRemoveByGroup } from "@storage/player/playerRemoveByGroup";
+import { groupRemoveByName } from "@storage/group/groupRemoveByName";
+
+import { Container, Form, HeaderList, NumbersOfPlayers } from "./styles";
 
 type RouteParams = {
   group: string;
@@ -25,6 +30,7 @@ export const Players = () => {
   const [team, setTeam] = useState("Team A");
   const [players, setPlayers] = useState<PlayerStorageDTO[]>([]);
 
+  const navigation = useNavigation();
   const route = useRoute();
   const { group } = route.params as RouteParams;
 
@@ -76,6 +82,25 @@ export const Players = () => {
       console.log(error);
       Alert.alert("Players", "Unable to remove this player.");
     }
+  };
+
+  const groupRemove = async () => {
+    try {
+      await groupRemoveByName(group);
+      navigation.navigate("groups");
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Remove team", "Unable to remove this team.");
+    }
+  };
+
+  const handleGroupRemove = async () => {
+    Alert.alert("Remove", "Are you sure you want to remove the team?", [
+      { text: "No", style: "cancel" },
+      { text: "Yes", onPress: () => groupRemove },
+    ]);
+    try {
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -138,7 +163,11 @@ export const Players = () => {
         ]}
       />
 
-      <Button title="Remove Team" type="SECONDARY" />
+      <Button
+        title="Remove Team"
+        type="SECONDARY"
+        onPress={handleGroupRemove}
+      />
     </Container>
   );
 };
