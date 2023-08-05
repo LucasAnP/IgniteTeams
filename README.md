@@ -1,7 +1,7 @@
 <div align="center" style="padding-bottom:30px; background:transparent">
-  <img src ="./assets/images/app-screenshot.jpeg" style="background:transparent" height="500" />
-  <img src ="./assets/images/app-screenshot2.jpeg" style="background:transparent" height="500" />
-  <img src ="./assets/images/app-screenshot3.jpeg" style="background:transparent" height="500" />
+  <img src ="./assets/app-screenshot.jpeg" style="background:transparent" height="500" />
+  <img src ="./assets/app-screenshot2.jpeg" style="background:transparent" height="500" />
+  <img src ="./assets/app-screenshot3.jpeg" style="background:transparent" height="500" />
 </div>
 
 ## 💻 Project - IgniteTeams
